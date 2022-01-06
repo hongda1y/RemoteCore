@@ -1,6 +1,6 @@
 //
 //  Remote.swift
-//  RemoteCore
+//  RCRemote
 //
 //  Created by GBS Technology on 5/1/22.
 //
@@ -8,18 +8,18 @@
 import UIKit
 import Alamofire
 
-private protocol RemoteCoreDelegate {
+private protocol RCRemoteDelegate {
     
     /// Request
     ///    - Parameters :
     ///     - configure : Defualt Remote Configuration
-    func request<T:Codable>(configuration : RemoteConfigure<T>)
+    func request<T:Codable>(configuration : RCConfigure<T>)
     
     
     /// Request
     ///    - Parameters :
     ///     - configure : UrlRequest Remote Configuration
-    func request<T:Codable>(configuration : RemoteURLRequestConfigure<T>)
+    func request<T:Codable>(configuration : RCURLRequestConfigure<T>)
     
     
     
@@ -32,22 +32,22 @@ private protocol RemoteCoreDelegate {
     /// Upload File
     ///    - Parameters :
     ///     - configure : Default Remote Configuration
-    func uploadFile<T:Codable>(configuration : RemoteConfigure<T>)
+    func uploadFile<T:Codable>(configuration : RCConfigure<T>)
     
     
 }
 
 
-extension RemoteCore : RemoteCoreDelegate {
+extension RCRemote : RCRemoteDelegate {
     
     
     /// Request
     ///     - Parameters :
     ///      - configure : Defualt Remote Configuration
-    public func request<T>(configuration: RemoteConfigure<T>) where T : Decodable, T : Encodable {
+    public func request<T>(configuration: RCConfigure<T>) where T : Decodable, T : Encodable {
         
         guard let headers = configuration.headers else {
-            configuration.completion(.failure(.csError(.missing_header)))
+            configuration.completion(.failure(.customError(.missing_header)))
             return
         }
         
@@ -63,8 +63,8 @@ extension RemoteCore : RemoteCoreDelegate {
             .responseData { response in
                 self.responseHandler(configuration: .init(response: response,
                                                           method: configuration.method,
-                                                          completion: { result in
-                    configuration.completion(result)
+                                                          completion: {
+                    configuration.completion($0)
                 }))
             }
     }
@@ -73,14 +73,14 @@ extension RemoteCore : RemoteCoreDelegate {
     /// Request
     ///    - Parameters :
     ///     - configure : UrlRequest Remote Configuration
-    public func request<T>(configuration: RemoteURLRequestConfigure<T>) where T : Decodable, T : Encodable {
+    public func request<T>(configuration: RCURLRequestConfigure<T>) where T : Decodable, T : Encodable {
         
         AF.request(configuration.urlRequest)
             .responseData { response in
                 self.responseHandler(configuration: .init(response: response,
                                                           method: configuration.urlRequest.method ?? .get,
-                                                          completion: { result in
-                    configuration.completion(result)
+                                                          completion: {
+                    configuration.completion($0)
                 }))
             }
     }
@@ -89,26 +89,30 @@ extension RemoteCore : RemoteCoreDelegate {
     /// Upload File
     ///    - Parameters :
     ///      - configure : Default Remote Configuration
-    public func uploadFile<T>(configuration: RemoteConfigure<T>) where T : Decodable, T : Encodable {
+    public func uploadFile<T>(configuration: RCConfigure<T>) where T : Decodable, T : Encodable {
         
         guard let headers = configuration.headers else {
-            configuration.completion(.failure(.csError(.missing_header)))
+            configuration.completion(.failure(.customError(.missing_header)))
             return
         }
         
+       
+        guard let file = configuration.file,
+              let data = file.data ,
+              let dataKey = file.fileUploadKey else {
+            configuration.completion(.failure(.customError(.missing_file)))
+            return
+        }
+        let fileName = file.fileName
+        let mimeType = file.mimeType
+
         AF.sessionConfiguration.timeoutIntervalForRequest = configuration.timeout
         AF.sessionConfiguration.timeoutIntervalForResource = configuration.timeout
         
         
-        let fileName = "\(Date().timeIntervalSince1970)"
-        guard let data = configuration.fileData , let dataKey = configuration.fileKey else {
-            configuration.completion(.failure(.csError(.missing_file)))
-            return
-        }
-        
         AF.upload(multipartFormData: {  multipartFormData in
             
-            multipartFormData.append(data, withName: dataKey, fileName: fileName, mimeType: "image/jpg")
+            multipartFormData.append(data, withName: dataKey, fileName: fileName, mimeType: mimeType)
             
             if let params = configuration.params {
                 for (key, value) in params {
@@ -123,7 +127,7 @@ extension RemoteCore : RemoteCoreDelegate {
                 if let object : T = self.decodeObject(result.data) {
                     configuration.completion(.success(object))
                 }else {
-                    configuration.completion(.failure(.csError(.upload_failed)))
+                    configuration.completion(.failure(.customError(.upload_failed)))
                 }
             }
     }
@@ -131,12 +135,12 @@ extension RemoteCore : RemoteCoreDelegate {
 }
 
 
-extension RemoteCore {
+extension RCRemote {
     
     /// responseHandler
     ///    - Parameters :
     ///     - configure : Default Response Configuration
-    private func responseHandler<T:Codable>(configuration:ResponseConfigure<T>) {
+    private func responseHandler<T:Codable>(configuration:RCResponseConfigure<T>) {
         let response = configuration.response
         let statusCode = response.response?.statusCode ?? 500
         switch response.result {
@@ -151,17 +155,17 @@ extension RemoteCore {
                 configuration.completion(.success(object))
                 break
             case 400..<403:
-                let errMessage : ErrorResponse? = self.decodeObject(response.data)
+                let errMessage : RCErrorResponse? = self.decodeObject(response.data)
                 configuration.completion(.failure(.badRequest(errMessage?.message ?? "Bad Request")))
                 break
             case 403:
-                configuration.completion(.failure(.csError(.token_expired)))
+                configuration.completion(.failure(.customError(.token_expired)))
                 break
             case 500:
-                configuration.completion(.failure(.csError(.something_went_wrong)))
+                configuration.completion(.failure(.customError(.something_went_wrong)))
                 break
             default:
-                configuration.completion(.failure(.csError(.json_response_error)))
+                configuration.completion(.failure(.customError(.json_response_error)))
                 break
             }
             break
@@ -169,11 +173,11 @@ extension RemoteCore {
         case .failure(let err):
             
             if statusCode == 500 {
-                configuration.completion(.failure(.csError(.something_went_wrong)))
+                configuration.completion(.failure(.customError(.something_went_wrong)))
             }
             
             else if statusCode == 403 {
-                configuration.completion(.failure(.csError(.token_expired)))
+                configuration.completion(.failure(.customError(.token_expired)))
             }
             
             else {
@@ -184,8 +188,14 @@ extension RemoteCore {
     }
 }
 
-class RemoteCore  {
+
+public class RCRemote  {
         
+    
+    public init() {}
+    
+    
+    
     /// Decode Object
     ///     - Parameters :
     ///      - data : Json data from request
