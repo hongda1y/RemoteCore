@@ -13,7 +13,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Minimum SDK
 
-Ios 11
+IOS 11
 
 ## Installation
 
