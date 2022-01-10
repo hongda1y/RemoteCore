@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// RCDeleteResponse : default remotecore base response class
 open class RCBaseResponse<T:Codable> : Codable {
     var count : Int = 0

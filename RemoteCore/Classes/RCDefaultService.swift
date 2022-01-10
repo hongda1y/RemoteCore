@@ -13,15 +13,13 @@ public protocol RCDefaultServiceRepo {
     /// Fetch Items
     /// - Parameters:
     ///   - config: Request parameters
-    func fetchItems<T:Codable>(of : T.Type,
-                               with config : RCParameterConfigure<T>)
+    func fetchItems<T:Codable>(with config : RCParameterConfigure<T>)
 
     
     /// Add or Update Item
     /// - Parameters:
     ///   - config: Request parameters
-    func addOrUpdateItem<T:Codable>(of : T.Type,
-                            with config : RCParameterConfigure<T>)
+    func addOrUpdateItem<T:Codable>(with config : RCParameterConfigure<T>)
 
 
     /// Delete Item
@@ -33,15 +31,14 @@ public protocol RCDefaultServiceRepo {
     /// Upload Image
     /// - Parameters:
     ///   - config: Request parameters
-    func uploadImage<T:Codable>(of : T.Type,
-                                with config : RCParameterConfigure<T>)
+    func uploadImage<T:Codable>(with config : RCParameterConfigure<T>)
 
 
     /// Search Item
     /// - Parameters:
     ///   - config: Request parameters
-    func searchItems<T:Codable>(of : T.Type,
-                                with config : RCParameterConfigure<T>)
+    func searchItems<T:Codable>(with config : RCParameterConfigure<T>)
+    
     
 }
 
@@ -49,7 +46,7 @@ public protocol RCDefaultServiceRepo {
 open class RCDefaultService {
     
     /// headers : Default  headers that use user auth token
-    public var headers : HTTPHeaders {
+    open var headers : HTTPHeaders {
         .init()
     }
     
@@ -68,8 +65,7 @@ extension RCDefaultService : RCDefaultServiceRepo {
     /// Fetch Items
     /// - Parameters:
     ///   - config: Request parameters
-    public func fetchItems<T>(of: T.Type,
-                              with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
+    public func fetchItems<T>(with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
         
         let params      : Parameters = [
             "page"      : config.page,
@@ -92,7 +88,7 @@ extension RCDefaultService : RCDefaultServiceRepo {
     /// Add or Update Item
     /// - Parameters:
     ///   - config: Request parameters
-    public func addOrUpdateItem<T>(of: T.Type,
+    public func addOrUpdateItem<T>(
                            with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
     
         guard let item = config.item else {
@@ -112,7 +108,8 @@ extension RCDefaultService : RCDefaultServiceRepo {
         urlRequest.httpMethod = HTTPMethod.post.rawValue
         urlRequest.httpBody = jData
 
-        let configure : RCURLRequestConfigure<T> = .init(urlRequest: urlRequest, debug: config.debug) {
+        let configure : RCURLRequestConfigure<T> = .init(urlRequest: urlRequest,
+                                                         debug: config.debug) {
             config.completion($0)
         }
 
@@ -152,8 +149,7 @@ extension RCDefaultService : RCDefaultServiceRepo {
     // Upload Image
     /// - Parameters:
     ///   - config: Request parameters
-    public func uploadImage<T>(of: T.Type,
-                               with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
+    public func uploadImage<T>(with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
         
 
         
@@ -174,8 +170,7 @@ extension RCDefaultService : RCDefaultServiceRepo {
     /// Search Item
     /// - Parameters:
     ///   - config: Request parameters
-    public func searchItems<T>(of: T.Type,
-                               with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
+    public func searchItems<T>(with config: RCParameterConfigure<T>) where T : Decodable, T : Encodable {
         
     
         guard let query = config.query else {

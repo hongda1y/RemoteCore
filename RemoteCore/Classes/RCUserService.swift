@@ -178,24 +178,24 @@ private protocol RCUserServiceRepo {
 open class RCUserService {
     
     /// headers : Default  headers that use user auth token
-    public var headers : HTTPHeaders {
+    open var headers : HTTPHeaders {
         .init()
     }
     
     /// baseHeaders : Default base headers use for login/register (base token)
-    public var baseHeaders : HTTPHeaders {
+    open var baseHeaders : HTTPHeaders {
         .init()
     }
     
     /// authUrl : All auth url required use in userservice
-    public var authUrl : RCAuthURL {
+    open var authUrl : RCAuthURL {
         .init()
     }
     
     
     
     /// enableDebug : Enable request debug for user service
-    public var enableDebug : Bool {
+    open var enableDebug : Bool {
         false
     }
     

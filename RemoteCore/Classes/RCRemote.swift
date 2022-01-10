@@ -55,7 +55,6 @@ extension RCRemote : RCRemoteDelegate {
         AF.sessionConfiguration.timeoutIntervalForResource = configuration.timeout
         
        
-        
         AF.request(configuration.url,
                    method: configuration.method,
                    parameters: configuration.params,
@@ -63,9 +62,7 @@ extension RCRemote : RCRemoteDelegate {
             .responseData { response in
                 self.responseHandler(configuration: .init(response: response,
                                                           method: configuration.method,
-                                                          completion: {
-                    configuration.completion($0)
-                }))
+                                                          completion: configuration.completion))
             }
     }
     
@@ -79,9 +76,7 @@ extension RCRemote : RCRemoteDelegate {
             .responseData { response in
                 self.responseHandler(configuration: .init(response: response,
                                                           method: configuration.urlRequest.method ?? .get,
-                                                          completion: {
-                    configuration.completion($0)
-                }))
+                                                          completion: configuration.completion))
             }
     }
     

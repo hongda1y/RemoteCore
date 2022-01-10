@@ -22,7 +22,7 @@ pod 'RemoteCore'
 
 ## Author
 
-dalygbs, daly.hong@gbstech.com.kh
+Hong Daly, daly.hong@gbstech.com.kh
 
 ## License
 

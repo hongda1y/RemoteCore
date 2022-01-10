@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+TODO: Remote Core : Easy handling networking request. It build on top of Alamofire.
                        DESC
 
   s.homepage         = 'https://github.com/hongda1y/RemoteCore'
@@ -29,9 +29,9 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
-
-  s.source_files = 'RemoteCore/Classes/**/*'
   
+  s.source_files = 'RemoteCore/Classes/**/*'
+  s.swift_versions = ['5.0','5.1']
   # s.resource_bundles = {
   #   'RemoteCore' => ['RemoteCore/Assets/*.png']
   # }

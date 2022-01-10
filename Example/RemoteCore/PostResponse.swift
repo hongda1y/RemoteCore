@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct PostResponse : Codable {
-    var data : [Post]
+struct PostResponse<T:Codable> : Codable {
+    var data : [T]
 }
