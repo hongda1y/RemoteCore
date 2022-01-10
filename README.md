@@ -11,7 +11,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-## Minimune
+## Minimum SDK
+
+Ios 11
 
 ## Installation
 
