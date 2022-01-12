@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RemoteCore'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Remote Core : Easy handling networking request.'
 
 # This description is used to generate tags and improve search results.
@@ -30,13 +30,32 @@ TODO: Remote Core : Easy handling networking request. It build on top of Alamofi
 
   s.ios.deployment_target = '11.0'
   
-  s.source_files = 'RemoteCore/Classes/**/*'
-  s.swift_versions = ['5.0','5.1']
+#  s.source_files    = 'RemoteCore/Classes/**/*'
+  s.swift_versions  = ['5.0','5.1']
+  s.platform        = :ios, '11.0'
+  s.requires_arc    = true
+  
+  
+  s.subspec 'Core' do |core|
+     core.source_files = 'RemoteCore/Classes/Core/**/*'
+     core.dependency 'Alamofire', '~> 5.5'
+  end
+  
+  
+  s.subspec 'Local' do |subspec|
+      subspec.dependency 'RemoteCore/Core'
+      subspec.dependency 'RealmSwift', '~> 3.0'
+      subspec.source_files = 'RemoteCore/Classes/Local/**/*'
+  end
+  
+  
+  s.default_subspec = 'Core'
+  
   # s.resource_bundles = {
   #   'RemoteCore' => ['RemoteCore/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'Alamofire', '~> 5.5'
+  
 end

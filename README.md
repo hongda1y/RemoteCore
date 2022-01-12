@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/RemoteCore.svg?style=flat)](https://cocoapods.org/pods/RemoteCore)
 [![Platform](https://img.shields.io/cocoapods/p/RemoteCore.svg?style=flat)](https://cocoapods.org/pods/RemoteCore)
 
-## Example
+## 📱 Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
@@ -13,7 +13,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Minimum SDK
 
-IOS 11
+RemoteCore is available for ios version 11 and above 
 
 ## Installation
 
@@ -22,6 +22,11 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'RemoteCore'
+```
+
+To use both of Local and Remote ,simply add the following line to your Podfile:
+```ruby
+pod 'RemoteCore/Local'
 ```
 
 ## Author

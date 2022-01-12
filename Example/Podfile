@@ -3,7 +3,7 @@ use_frameworks!
 platform :ios, '11.0'
 
 target 'RemoteCore_Example' do
-  pod 'RemoteCore', :path => '../'
+  pod 'RemoteCore/Local', :path => '../'
 
   target 'RemoteCore_Tests' do
     inherit! :search_paths

@@ -178,8 +178,8 @@ extension RCDefaultService : RCDefaultServiceRepo {
             return
         }
         
+        
         let params : Parameters = [
-            
             "search" : query,
             "pagination" : config.pagination
         ]
@@ -194,7 +194,7 @@ extension RCDefaultService : RCDefaultServiceRepo {
                 config.completion($0)
 
         }
-
+        
         rcRemote.request(configuration: configure)
     }
 }
