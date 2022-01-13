@@ -58,7 +58,7 @@ class RemoteClassDemo {
     
     func fetchItem() {
         
-        let config = RCConfigure<PostResponse<Post>>.init(url: "https://gorest.co.in/public/v1/posts",headers: .default) { result in
+        let config = RCConfigure<PostResponse<Post>>.init(url: "https://gorest.co.in/public/v1/posts",headers: .default,debug: true) { result in
             switch result {
             case .success(let data):
                 print(data?.data ?? [])

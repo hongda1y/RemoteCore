@@ -60,8 +60,10 @@ extension RCRemote : RCRemoteDelegate {
                    parameters: configuration.params,
                    headers: headers)
             .responseData { response in
+                
                 self.responseHandler(configuration: .init(response: response,
                                                           method: configuration.method,
+                                                          debug:configuration.debug,
                                                           completion: configuration.completion))
             }
     }
@@ -138,9 +140,13 @@ extension RCRemote {
     private func responseHandler<T:Codable>(configuration:RCResponseConfigure<T>) {
         let response = configuration.response
         let statusCode = response.response?.statusCode ?? 500
+        
         switch response.result {
         case .success(_ ):
             let object : T? = self.decodeObject(response.data)
+            if configuration.debug , let obj = object{
+                debugPrint(#function,obj)
+            }
             if configuration.method == .delete {
                 configuration.completion(.success(object))
                 return

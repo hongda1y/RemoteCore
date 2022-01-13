@@ -155,16 +155,21 @@ public struct RCResponseConfigure<T:Codable> {
     var completion  : RCResposeHandler<T>
     
     
-    
+    /// debug
+    var debug : Bool = false
     
     /// Init
     /// - Parameters:
     ///   - response: Request Response
     ///   - method: Request method for checking request response
     ///   - completion: Response handler when request complete , Default value :  empty callback
-    public init(response: DataResponse<Data, AFError>, method: HTTPMethod = .get, completion: @escaping RCResposeHandler<T>) {
+    public init(response: DataResponse<Data, AFError>,
+                method: HTTPMethod = .get,
+                debug : Bool = false,
+                completion: @escaping RCResposeHandler<T>) {
         self.response = response
         self.method = method
+        self.debug = debug
         self.completion = completion
     }
     
