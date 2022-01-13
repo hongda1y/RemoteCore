@@ -49,6 +49,7 @@ public struct RCFile {
     
 }
 
+
 public struct RCConfigure<T:Codable> {
         
     
@@ -74,7 +75,7 @@ public struct RCConfigure<T:Codable> {
     var debug       : Bool          = false
     
     /// completion : Response handler when request complete , Default value :  empty callback
-    var completion  : (Swift.Result<T?,RCError>) -> Void = {_ in}
+    var completion  : RCResposeHandler<T>
     
     
     
@@ -96,7 +97,7 @@ public struct RCConfigure<T:Codable> {
                 file: RCFile? = nil,
                 timeout: TimeInterval = .init(60),
                 debug: Bool = false,
-                completion: @escaping (Result<T?, RCError>) -> Void = {_ in}) {
+                completion: @escaping RCResposeHandler<T>) {
         self.url = url
         self.method = method
         self.params = params
@@ -120,7 +121,7 @@ public struct RCURLRequestConfigure<T:Codable> {
     var debug       : Bool = false
     
     /// completion : Response handler when request complete , Default value : empty callback
-    var completion  : (Swift.Result<T?,RCError>) -> Void = {_ in}
+    var completion  :  RCResposeHandler<T>
     
     
     
@@ -131,7 +132,7 @@ public struct RCURLRequestConfigure<T:Codable> {
     ///   - completion: Response handler when request complete , Default value : empty callback
     public init(urlRequest: URLRequest,
                 debug: Bool = false,
-                completion: @escaping (Result<T?, RCError>) -> Void = {_ in}) {
+                completion: @escaping RCResposeHandler<T>) {
         self.urlRequest = urlRequest
         self.debug = debug
         self.completion = completion
@@ -151,7 +152,7 @@ public struct RCResponseConfigure<T:Codable> {
     var method      : HTTPMethod = .get
     
     /// completion : Response handler when request complete , Default value :  empty callback
-    var completion  : (Swift.Result<T?,RCError>) -> Void = {_ in}
+    var completion  : RCResposeHandler<T>
     
     
     
@@ -161,7 +162,7 @@ public struct RCResponseConfigure<T:Codable> {
     ///   - response: Request Response
     ///   - method: Request method for checking request response
     ///   - completion: Response handler when request complete , Default value :  empty callback
-    public init(response: DataResponse<Data, AFError>, method: HTTPMethod = .get, completion: @escaping (Result<T?, RCError>) -> Void = {_ in}) {
+    public init(response: DataResponse<Data, AFError>, method: HTTPMethod = .get, completion: @escaping RCResposeHandler<T>) {
         self.response = response
         self.method = method
         self.completion = completion

@@ -18,7 +18,7 @@ public class RCDatabase: NSObject {
         migrationBlock: { migration, oldSchemaVersion in
     })
     
-    public class func updateConfig(_ config : Realm.Configuration) {
+    public class func config(_ config : Realm.Configuration) {
         defaultConfig = config
     }
     

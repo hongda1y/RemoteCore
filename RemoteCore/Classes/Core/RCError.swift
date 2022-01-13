@@ -24,7 +24,7 @@ extension RCError: LocalizedError {
         case .customError(let err):
             return err.rawValue
         case .decodeError(let data):
-            return data as? String ?? ""
+            return data as? String ?? "decode_error"
         case .error(let afError):
             return afError.localizedDescription
         }

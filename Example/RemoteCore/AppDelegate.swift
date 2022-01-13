@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RemoteCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

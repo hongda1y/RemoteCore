@@ -113,26 +113,6 @@ private protocol RCBaseServiceRepo {
 
 open class RCBaseService {
 
-    /// headers : Default  headers that use user auth token
-    public var headers : HTTPHeaders {
-        .init()
-    }
-
-    /// baseHeaders : Default base headers use for login/register (base token)
-    public var baseHeaders : HTTPHeaders {
-        .init()
-    }
-
-    /// authUrl : All auth url required use in userservice
-    public var authUrl : RCAuthURL {
-        .init()
-    }
-
-    /// enableDebug : Enable request debug for user service
-    public var enableDebug : Bool {
-        false
-    }
-
     /// rcRemote : Remote Object
     public let rcRemote = RCRemote()
 
@@ -156,16 +136,13 @@ extension RCBaseService : RCBaseServiceRepo {
                        completion: @escaping RCResposeHandler<T>) where T : Decodable, T : Encodable {
 
         let configure : RCConfigure<T> = .init(url: url,
-                                                   method: .get,
-                                                   params: params,
-                                                   headers: headers,
-                                                   debug: debug) {
-
-            completion($0)
-
-        }
-
+                                               method: .get,
+                                               params: params,
+                                               headers: headers,
+                                               debug: debug,
+                                               completion:completion)
         rcRemote.request(configuration: configure)
+        
 
     }
 
@@ -201,10 +178,8 @@ extension RCBaseService : RCBaseServiceRepo {
         urlRequest.httpMethod = HTTPMethod.post.rawValue
         urlRequest.httpBody = jData
 
-        let configure : RCURLRequestConfigure<T> = .init(urlRequest: urlRequest, debug: debug) {
-            completion($0)
-        }
-
+        let configure : RCURLRequestConfigure<T> = .init(urlRequest: urlRequest, debug: debug,completion: completion)
+        
         rcRemote.request(configuration: configure)
 
     }
@@ -243,9 +218,7 @@ extension RCBaseService : RCBaseServiceRepo {
         urlRequest.httpMethod = HTTPMethod.patch.rawValue
         urlRequest.httpBody = jData
 
-        let configure : RCURLRequestConfigure<T> = .init(urlRequest: urlRequest, debug: debug) {
-            completion($0)
-        }
+        let configure : RCURLRequestConfigure<T> = .init(urlRequest: urlRequest, debug: debug,completion: completion)
 
         rcRemote.request(configuration: configure)
 
@@ -268,10 +241,8 @@ extension RCBaseService : RCBaseServiceRepo {
                                                    method: .delete,
                                                    params: parameters,
                                                    headers: headers,
-                                                   debug: debug) {
-            completion($0)
-
-        }
+                                                   debug: debug,
+                                                   completion: completion)
 
         rcRemote.request(configuration: configure)
 
@@ -296,16 +267,13 @@ extension RCBaseService : RCBaseServiceRepo {
                         debug: Bool = false,
                         completion: @escaping RCResposeHandler<T>) where T : Decodable, T : Encodable {
 
-        let configure : RCConfigure<T> = .init(url: url,
+        let configure : RCConfigure<T> = .init(url:url,
                                                    method: .get,
                                                    params: parameters,
                                                    headers: headers,
                                                    file: .init(data:imageData,fileUploadKey: imageKey),
-                                                   debug: debug) {
-
-            completion($0)
-
-        }
+                                                   debug: debug,
+                                               completion: completion)
 
         rcRemote.uploadFile(configuration: configure)
 
@@ -329,15 +297,11 @@ extension RCBaseService : RCBaseServiceRepo {
                         completion: @escaping RCResposeHandler<T>) where T : Decodable, T : Encodable {
 
         let configure : RCConfigure<T> = .init(url: url,
-                                                   method: .get,
-                                                   params: parameters,
-                                                   headers: headers,
-                                                   debug: debug) {
-
-            completion($0)
-
-        }
-
+                                               method: .get,
+                                               params: parameters,
+                                               headers: headers,
+                                               debug: debug,
+                                               completion: completion)
         rcRemote.request(configuration: configure)
 
     }

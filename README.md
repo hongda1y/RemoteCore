@@ -13,7 +13,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Minimum SDK
 
-RemoteCore is available for ios version 11 and above 
+RemoteCore is available for ios: 11.0 and above 
 
 ## Installation
 
