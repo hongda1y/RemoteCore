@@ -58,6 +58,7 @@ extension RCRemote : RCRemoteDelegate {
         AF.request(configuration.url,
                    method: configuration.method,
                    parameters: configuration.params,
+                   encoding: configuration.encoding,
                    headers: headers)
             .responseData { response in
                 

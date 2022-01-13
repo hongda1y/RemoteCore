@@ -74,8 +74,13 @@ public struct RCConfigure<T:Codable> {
     /// debug   : Debug response from request , Default value false
     var debug       : Bool          = false
     
+    
+    /// encoding
+    var encoding   : ParameterEncoding = URLEncoding.default
+    
     /// completion : Response handler when request complete , Default value :  empty callback
     var completion  : RCResposeHandler<T>
+    
     
     
     
@@ -97,6 +102,7 @@ public struct RCConfigure<T:Codable> {
                 file: RCFile? = nil,
                 timeout: TimeInterval = .init(60),
                 debug: Bool = false,
+                encoding : ParameterEncoding = URLEncoding.default,
                 completion: @escaping RCResposeHandler<T>) {
         self.url = url
         self.method = method
@@ -105,6 +111,7 @@ public struct RCConfigure<T:Codable> {
         self.file = file
         self.timeout = timeout
         self.debug = debug
+        self.encoding = encoding
         self.completion = completion
     }
 
@@ -122,8 +129,6 @@ public struct RCURLRequestConfigure<T:Codable> {
     
     /// completion : Response handler when request complete , Default value : empty callback
     var completion  :  RCResposeHandler<T>
-    
-    
     
     /// Init
     /// - Parameters:
