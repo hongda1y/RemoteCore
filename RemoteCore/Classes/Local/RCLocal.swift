@@ -59,6 +59,7 @@ public protocol RCLocalRepo {
 
 open class RCLocal<T:Object> : RCLocalRepo{
   
+    public init() {}
     
     private let realm = RCDatabase.realm
     
