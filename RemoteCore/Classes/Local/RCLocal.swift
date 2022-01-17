@@ -15,7 +15,7 @@ public protocol RCLocalRepo {
     
     /// Write object / objects
     func write(_ obj : T)
-    func wiite(_ objs : [T])
+    func write(_ objs : [T])
     
     /// Update object
     func update(_ obj : T , update : () -> Void)
@@ -82,7 +82,7 @@ extension RCLocal {
     
     /// write
     /// - Parameter objs: Collection of realm objects
-    public func wiite(_ objs: [T]) {
+    public func write(_ objs: [T]) {
         try? realm?.write {
             realm?.add(objs,update: .modified)
         }

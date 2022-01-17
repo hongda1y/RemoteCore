@@ -116,6 +116,8 @@ open class RCBaseService {
     /// rcRemote : Remote Object
     public let rcRemote = RCRemote()
 
+    
+    public init() {}
 
 }
 

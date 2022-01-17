@@ -8,7 +8,7 @@
 import Foundation
 
 /// RCDeleteResponse : default remotecore base response class
-open class RCBaseResponse<T:Codable> : Codable {
+public class RCBaseResponse<T:Codable> : Codable {
     var count : Int = 0
     var next : String?
     var previous : String?
@@ -19,13 +19,13 @@ open class RCBaseResponse<T:Codable> : Codable {
 
 
 /// RCDeleteResponse : default remotecore delete response class
-open class RCDeleteResponse : Codable {
+public class RCDeleteResponse : Codable {
     var message : String?
 }
 
 
 /// RCErrorResponse : default remotecore error response class
-open class RCErrorResponse : Codable {
+public class RCErrorResponse : Codable {
     var message : String?
 }
 

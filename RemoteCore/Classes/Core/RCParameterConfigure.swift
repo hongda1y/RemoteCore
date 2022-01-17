@@ -8,7 +8,7 @@
 import Foundation
 
 
-open class RCParameterConfigure<T:Codable> {
+public class RCParameterConfigure<T:Codable> {
     
     var url         : String
     var item        : T?        = nil
