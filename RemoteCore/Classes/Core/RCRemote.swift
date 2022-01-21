@@ -215,7 +215,7 @@ public class RCRemote  {
         } catch let err {
             
             if let jsonString = try? JSONSerialization.jsonObject(with: data,
-                                                                  options: .allowFragments)  as? [Dictionary<String,Any>] {
+                                                                  options: .allowFragments) {
                 debugPrint(#function,"decode_error",jsonString)
             }else {
                 debugPrint(#function,"decode_error", err)
