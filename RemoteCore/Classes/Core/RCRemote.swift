@@ -213,9 +213,14 @@ public class RCRemote  {
             return object
             
         } catch let err {
-            debugPrint(#function,"decode_error",err)
+            
+            if let jsonString = try? JSONSerialization.jsonObject(with: data,
+                                                                  options: .allowFragments)  as? [Dictionary<String,Any>] {
+                debugPrint(#function,"decode_error",jsonString)
+            }else {
+                debugPrint(#function,"decode_error", err)
+            }
         }
-        
         return nil
     
     }
