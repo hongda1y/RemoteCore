@@ -13,19 +13,19 @@ public struct RCFile {
         
     
     /// fileName : File name
-    var fileName : String = "\(Date().timeIntervalSince1970)"
+    public var fileName : String = "\(Date().timeIntervalSince1970)"
     
     /// fileURL : File URL
-    var fileURL : URL?
+    public var fileURL : URL?
     
     /// data : File Data
-    var data : Data?
+    public var data : Data?
     
     /// mimeType : File mimeType
-    var mimeType : String = "image/jpg"
+    public var mimeType : String = "image/jpg"
     
     /// mimeType : File key of server
-    var fileUploadKey : String?
+    public var fileUploadKey : String?
     
     
     /// Init
@@ -54,32 +54,32 @@ public struct RCConfigure<T:Codable> {
         
     
     /// url : Remote Api Url
-    var url         : String
+    public var url         : String
     
     /// method : Request Method , Default value : .get
-    var method      : HTTPMethod    = .get
+    public var method      : HTTPMethod    = .get
     
     /// params : Request Parameters , Default value : nil
-    var params      : Parameters?   = nil
+    public var params      : Parameters?   = nil
     
     /// headers :  Request Header , Default value : nil
-    var headers     : HTTPHeaders?  = nil
+    public var headers     : HTTPHeaders?  = nil
     
     /// file : File for upload, Default value : nil
-    var file        : RCFile? = nil
+    public var file        : RCFile? = nil
     
     /// timeout  : Request timeout , Default value 60s
-    var timeout     : TimeInterval  = .init(60)
+    public var timeout     : TimeInterval  = .init(60)
     
     /// debug   : Debug response from request , Default value false
-    var debug       : Bool          = false
+    public var debug       : Bool          = false
     
     
     /// encoding
-    var encoding   : ParameterEncoding = URLEncoding.default
+    public var encoding   : ParameterEncoding = URLEncoding.default
     
     /// completion : Response handler when request complete , Default value :  empty callback
-    var completion  : RCResposeHandler<T>
+    public var completion  : RCResposeHandler<T>
     
     
     
@@ -122,13 +122,13 @@ public struct RCURLRequestConfigure<T:Codable> {
        
     
     /// urlRequest : Use URLRequest  instead of url string
-    var urlRequest  : URLRequest
+    public var urlRequest  : URLRequest
     
     /// debug   : Debug response from request , Default value false
-    var debug       : Bool = false
+    public var debug       : Bool = false
     
     /// completion : Response handler when request complete , Default value : empty callback
-    var completion  :  RCResposeHandler<T>
+    public var completion  :  RCResposeHandler<T>
     
     /// Init
     /// - Parameters:

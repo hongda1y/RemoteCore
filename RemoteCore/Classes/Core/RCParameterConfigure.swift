@@ -10,16 +10,16 @@ import Foundation
 
 public class RCParameterConfigure<T:Codable> {
     
-    var url         : String
-    var item        : T?        = nil
-    var itemId      : String?   = nil
-    var page        : Int       = 1
-    var limit       : Int       = 20
-    var query       : String?   = nil
-    var pagination  : Bool      = false
-    var debug       : Bool      = false
-    var completion  : RCResposeHandler<T> = {_ in}
-    var file        : RCFile?   = nil
+    public var url         : String
+    public var item        : T?        = nil
+    public var itemId      : String?   = nil
+    public var page        : Int       = 1
+    public var limit       : Int       = 20
+    public var query       : String?   = nil
+    public var pagination  : Bool      = false
+    public var debug       : Bool      = false
+    public var completion  : RCResposeHandler<T> = {_ in}
+    public var file        : RCFile?   = nil
 
 
     public init(url: String,

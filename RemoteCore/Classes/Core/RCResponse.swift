@@ -9,24 +9,24 @@ import Foundation
 
 /// RCDeleteResponse : default remotecore base response class
 public class RCBaseResponse<T:Codable> : Codable {
-    var count : Int = 0
-    var next : String?
-    var previous : String?
-    var results : [T]?
-    var non_field_errors : [String]?
-    var message : String?
+    public var count : Int = 0
+    public var next : String?
+    public var previous : String?
+    public var results : [T]?
+    public var non_field_errors : [String]?
+    public var message : String?
 }
 
 
 /// RCDeleteResponse : default remotecore delete response class
 public class RCDeleteResponse : Codable {
-    var message : String?
+    public var message : String?
 }
 
 
 /// RCErrorResponse : default remotecore error response class
 public class RCErrorResponse : Codable {
-    var message : String?
+    public var message : String?
 }
 
 

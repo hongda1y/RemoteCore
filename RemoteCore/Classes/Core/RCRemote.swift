@@ -122,6 +122,11 @@ extension RCRemote : RCRemoteDelegate {
                   method: configuration.method,
                   headers: headers)
             .responseData { result in
+                
+                if configuration.debug {
+                    debugPrint(result.result)
+                }
+                
                 if let object : T = self.decodeObject(result.data) {
                     configuration.completion(.success(object))
                 }else {
