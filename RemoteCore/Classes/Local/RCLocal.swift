@@ -24,13 +24,20 @@ public protocol RCLocalRepo {
     func delete(_ obj : T)
     func delete(_ id : Int)
     func delete(_ id : String)
+    func delete(_ objs : [T])
+    func delete(query : String)
     func deleteAll()
     
     /// Get all objects
     func getAll() -> [T]
     func getAll(sortKey : String, ascending : Bool) -> [T]
-    func getAll(limit : Int,sortedKey : String) -> [T]
-    func getAll(where query : String , limit : Int,sortedKey : String) -> [T]
+    func getAll(limit : Int,
+                sortedKey : String,
+                ascending : Bool) -> [T]
+    func getAll(where query : String ,
+                limit : Int,
+                sortedKey : String,
+                ascending : Bool) -> [T]
     func getAll(query : String) -> [T]
     
     /// Get object/objects in raw form
@@ -131,6 +138,21 @@ extension RCLocal {
     }
     
     
+    public func delete(_ objs: [T]) {
+        try? realm?.write {
+            realm?.delete(objs)
+        }
+    }
+    
+    
+    public func delete(query: String) {
+        if let objs = realm?.objects(T.self).filter(query) {
+            try? realm?.write {
+                realm?.delete(objs)
+            }
+        }
+    }
+    
     
     /// deleteAll
     public func deleteAll() {
@@ -171,11 +193,15 @@ extension RCLocal {
     /// - Parameters:
     ///   - limit: limit object
     ///   - sortedKey: Sort key
+    ///   - ascending : Sort key
     /// - Returns: Array of realm object (T.Type)
-    public func getAll(limit: Int, sortedKey: String) -> [T] {
+    public func getAll(limit: Int,
+                       sortedKey: String ,
+                       ascending: Bool = false) -> [T] {
         var results = [T]()
         var count = limit
-        if let objects = realm?.objects(T.self).sorted(byKeyPath: sortedKey, ascending: false) {
+        if let objects = realm?.objects(T.self).sorted(byKeyPath: sortedKey,
+                                                       ascending: ascending) {
             
             if objects.count < count {
                 count = objects.count
@@ -194,8 +220,12 @@ extension RCLocal {
     ///   - query: Realm query
     ///   - limit: Limit object
     ///   - sortedKey: Sort key
+    ///   - ascending : Sort
     /// - Returns: Array of realm object (T.Type)
-    public func getAll(where query: String, limit: Int, sortedKey: String) -> [T] {
+    public func getAll(where query: String,
+                       limit: Int,
+                       sortedKey: String,
+                       ascending: Bool = false) -> [T] {
         
         var results = [T]()
         var count = limit
@@ -203,7 +233,7 @@ extension RCLocal {
             .objects(T.self)
             .filter(query)
             .sorted(byKeyPath: sortedKey,
-                    ascending: false) {
+                    ascending: ascending) {
             
             if objects.count < count {
                 count = objects.count
