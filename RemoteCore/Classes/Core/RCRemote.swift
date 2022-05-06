@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+public let RC_TOKEN_EXPIRED = Notification.Name("RC_TOKEN_EXPIRED")
 
 private protocol RCRemoteDelegate {
     
@@ -161,12 +162,17 @@ extension RCRemote {
             case 200..<300:
                 configuration.completion(.success(object))
                 break
-            case 400..<403:
+            case 401:
+                configuration.completion(.failure(.customError(.token_expired)))
+                self.pushTokenExpiredNotification()
+                break
+            case 402..<403:
                 let errMessage : RCErrorResponse? = self.decodeObject(response.data)
                 configuration.completion(.failure(.badRequest(errMessage?.message ?? "Bad Request")))
                 break
             case 403:
                 configuration.completion(.failure(.customError(.token_expired)))
+                self.pushTokenExpiredNotification()
                 break
             case 500:
                 configuration.completion(.failure(.customError(.something_went_wrong)))
@@ -183,8 +189,9 @@ extension RCRemote {
                 configuration.completion(.failure(.customError(.something_went_wrong)))
             }
             
-            else if statusCode == 403 {
+            else if statusCode == 403 || statusCode == 401 {
                 configuration.completion(.failure(.customError(.token_expired)))
+                self.pushTokenExpiredNotification()
             }
             
             else {
@@ -193,6 +200,11 @@ extension RCRemote {
             break
         }
     }
+    
+    //Push Notification Token Expire
+    private func pushTokenExpiredNotification(){
+        NotificationCenter.default.post(name: RC_TOKEN_EXPIRED, object: nil)
+    }
 }
 
 
@@ -200,7 +212,6 @@ public class RCRemote  {
         
     
     public init() {}
-    
     
     
     /// Decode Object
