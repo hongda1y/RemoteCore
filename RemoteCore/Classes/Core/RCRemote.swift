@@ -166,7 +166,7 @@ extension RCRemote {
                 configuration.completion(.failure(.customError(.token_expired)))
                 self.pushTokenExpiredNotification()
                 break
-            case 402..<403:
+            case 400,402..<403:
                 let errMessage : RCErrorResponse? = self.decodeObject(response.data)
                 configuration.completion(.failure(.badRequest(errMessage?.message ?? "Bad Request")))
                 break
@@ -178,7 +178,7 @@ extension RCRemote {
                 configuration.completion(.failure(.customError(.something_went_wrong)))
                 break
             default:
-                configuration.completion(.failure(.customError(.json_response_error)))
+                configuration.completion(.failure(.customError(.something_went_wrong)))
                 break
             }
             break
