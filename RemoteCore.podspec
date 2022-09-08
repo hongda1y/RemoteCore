@@ -44,7 +44,7 @@ TODO: Remote Core : Easy handling networking request. It build on top of Alamofi
   
   s.subspec 'Local' do |subspec|
       subspec.dependency 'RemoteCore/Core'
-      subspec.dependency 'RealmSwift', '~> 3.0'
+      subspec.dependency 'RealmSwift'
       subspec.source_files = 'RemoteCore/Classes/Local/**/*'
   end
   
